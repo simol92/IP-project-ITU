@@ -1,0 +1,15 @@
+*PAGE:http://page1.com
+Page1
+java
+java
+java
+java
+java
+*PAGE:http://page2.com
+Page2
+java
+java
+java
+*PAGE:http://page3.com
+Page3
+java

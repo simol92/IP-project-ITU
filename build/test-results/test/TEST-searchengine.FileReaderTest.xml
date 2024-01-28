@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="searchengine.FileReaderTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2022-12-14T19:53:28" hostname="Simons-MacBook-Pro.local" time="0.55">
+  <properties/>
+  <testcase name="addFileContent_WithoutContent()" classname="searchengine.FileReaderTest" time="0.033"/>
+  <testcase name="addFileContent_WithContent()" classname="searchengine.FileReaderTest" time="0.516"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

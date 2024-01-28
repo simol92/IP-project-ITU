@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="da"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebServer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">searchengine</a> &gt; <a href="index.source.html" class="el_package">searchengine</a> &gt; <span class="el_source">WebServer.java</span></div><h1>WebServer.java</h1><pre class="source lang-java linenums">package searchengine;
+
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
+
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpServer;
+
+/**
+ * A webserver class used to create our searchengine.
+ * 
+ * Takes input in form of HttpExhanges and directly uses 
+ * the WebPages &amp; Searchengine class to create content from the input
+ * 
+ * @author simol, gega, madbe, elsb
+ * 
+ */
+
+public class WebServer {
+    
+    private static final int PORT = 8080;
+    private static final int BACKLOG = 0;
+<span class="nc" id="L29">    private static final Charset CHARSET = StandardCharsets.UTF_8;</span>
+    private WebPages webPages;
+    private SearchEngine searchEngine;
+    protected HttpServer server;
+
+<span class="nc" id="L34">    public WebServer(int port) throws IOException {</span>
+<span class="nc" id="L35">      webPages = new WebPages();</span>
+<span class="nc" id="L36">      searchEngine = new SearchEngine();</span>
+
+<span class="nc" id="L38">      webPages.readFile(&quot;config.txt&quot;);</span>
+<span class="nc" id="L39">      searchEngine.makeIndex(webPages.getWebpages());</span>
+
+<span class="nc" id="L41">      server = HttpServer.create(new InetSocketAddress(port), BACKLOG);</span>
+      
+<span class="nc" id="L43">      server.createContext(&quot;/&quot;, io -&gt; respond(io, 200, &quot;text/html&quot;, getWebFile(&quot;web/index.html&quot;)));</span>
+<span class="nc" id="L44">      server.createContext(&quot;/search&quot;, io -&gt; handleSearch(io));</span>
+<span class="nc" id="L45">      server.createContext(</span>
+<span class="nc" id="L46">          &quot;/favicon.ico&quot;, io -&gt; respond(io, 200, &quot;image/x-icon&quot;, getWebFile(&quot;web/favicon.ico&quot;)));</span>
+<span class="nc" id="L47">      server.createContext(</span>
+<span class="nc" id="L48">          &quot;/code.js&quot;, io -&gt; respond(io, 200, &quot;application/javascript&quot;, getWebFile(&quot;web/code.js&quot;)));</span>
+<span class="nc" id="L49">      server.createContext(</span>
+<span class="nc" id="L50">          &quot;/style.css&quot;, io -&gt; respond(io, 200, &quot;text/css&quot;, getWebFile(&quot;web/style.css&quot;)));</span>
+<span class="nc" id="L51">      server.start();</span>
+
+<span class="nc" id="L53">      String msg = &quot; WebServer running on http://localhost:&quot; + port + &quot; &quot;;</span>
+<span class="nc" id="L54">      System.out.println(&quot;╭&quot; + &quot;─&quot;.repeat(msg.length()) + &quot;╮&quot;);</span>
+<span class="nc" id="L55">      System.out.println(&quot;│&quot; + msg + &quot;│&quot;);</span>
+<span class="nc" id="L56">      System.out.println(&quot;╰&quot; + &quot;─&quot;.repeat(msg.length()) + &quot;╯&quot;);</span>
+      
+<span class="nc" id="L58">    }</span>
+
+    /**
+     * 
+     * Takes a HTTP request received and a response to be generated in one exchange which will be converted into a string
+     * and will be used as our searchterm string.
+     * 
+     * @param io - takes a HttpExchange io and creates a string
+     * @return returns the string created from IO
+     */
+
+    public String getSearchTerm(HttpExchange io){
+
+<span class="nc" id="L71">      String searchTerm = io.getRequestURI().getRawQuery().split(&quot;=&quot;)[1];</span>
+
+<span class="nc" id="L73">        return searchTerm;</span>
+    }
+
+    /**
+     * Uses the input IO and uses searches the inverted index to lookup a key according to the IO string 
+     * and returns a list of pages mapped to the key.
+     * Afterwards each found page is then put into the a list called response, which the method will return
+     * 
+     * @param io - takes a HttpExchange io and creates a string
+     * @return - returns a list of strings 
+     */
+
+     public List&lt;String&gt; searchHandler(HttpExchange io) { // renamed to handleSearch
+        
+<span class="nc" id="L87">      List&lt;String&gt; response = new ArrayList&lt;&gt;();</span>
+      
+<span class="nc bnc" id="L89" title="All 2 branches missed.">      for (Page page : searchEngine.getSearchResults(getSearchTerm(io))) { </span>
+
+<span class="nc" id="L91">        response.add(String.format(&quot;{\&quot;url\&quot;: \&quot;%s\&quot;, \&quot;title\&quot;: \&quot;%s\&quot;}&quot;,</span>
+
+<span class="nc" id="L93">            page.getListOfWords().get(0).substring(6), page.getListOfWords().get(1)));</span>
+                
+<span class="nc" id="L95">      }</span>
+
+<span class="nc" id="L97">      return response;</span>
+
+    }
+
+     /**
+       * 
+       * Takes a list of strings and converts it into a bytearray to create server content 
+       * 
+       * @param response - takes a list of strings as input
+       * @return returns a converted list of strings as a byte array 
+       */
+
+       public byte[] responseToByteArray(List&lt;String&gt; response){
+        
+<span class="nc" id="L111">        byte[] bytes = response.toString().getBytes(CHARSET);</span>
+        
+<span class="nc" id="L113">        return bytes;</span>
+        
+    }
+
+    /**
+     * Takes the io and converts it into a string. The string will be used as a key in the inverted index which has all the websites mapped to words.
+     * if the input string is a key inside the map, the websites mapped to the key will be returned and put into a list. The list is then converted into a byte array
+     * as the respond method uses the bytes to create webcontent.
+     * 
+     * @param io takes a HttpExchange input
+     * 
+     */
+
+    public void handleSearch(HttpExchange io) { 
+
+<span class="nc" id="L128">      List&lt;String&gt; IOresults = new ArrayList&lt;&gt;();</span>
+
+<span class="nc" id="L130">      IOresults = searchHandler(io);</span>
+<span class="nc" id="L131">      IOresults = searchHandler(io);</span>
+      
+<span class="nc" id="L133">      respond(io, 200, &quot;application/json&quot;, responseToByteArray(IOresults));</span>
+<span class="nc" id="L134">      respond(io, 200, &quot;application/json&quot;, responseToByteArray(IOresults));</span>
+
+<span class="nc" id="L136">    }</span>
+
+    /**
+     * Takes a filename as a path from a js file etc and returns a bytearray that will be used to create server content.
+     * 
+     * @param filename
+     * takes a filename / path, as a string
+     * @return
+     * returns a bytearray
+     */
+
+    public byte[] getWebFile(String filename) {
+      try {
+<span class="nc" id="L149">        return Files.readAllBytes(Paths.get(filename));</span>
+<span class="nc" id="L150">      } catch (IOException e) {</span>
+<span class="nc" id="L151">        e.printStackTrace();</span>
+<span class="nc" id="L152">        return new byte[0];</span>
+      }
+    }
+
+    /**
+     * Will be used to create server content..
+     * 
+     * @param io
+     * a HttpExchange io
+     * @param code
+     * an int
+     * @param mime
+     * a string
+     * @param response
+     * a bytearray
+     */
+
+    public void respond(HttpExchange io, int code, String mime, byte[] response) {
+      try {
+<span class="nc" id="L171">        io.getResponseHeaders()</span>
+<span class="nc" id="L172">            .set(&quot;Content-Type&quot;, String.format(&quot;%s; charset=%s&quot;, mime, CHARSET.name()));</span>
+<span class="nc" id="L173">        io.sendResponseHeaders(200, response.length);</span>
+<span class="nc" id="L174">        io.getResponseBody().write(response);</span>
+<span class="nc" id="L175">      } catch (Exception e) {</span>
+      } finally {
+<span class="nc" id="L177">        io.close();</span>
+      }
+<span class="nc" id="L179">    }</span>
+
+    public static int getPort() {
+<span class="nc" id="L182">        return PORT;</span>
+    }
+    
+ 
+    public static void main(String[] args) throws IOException {
+
+<span class="nc" id="L188">      new WebServer(WebServer.getPort());</span>
+      
+<span class="nc" id="L190">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,15 @@
+word1
+word2
+*PAGE:http://page1.com
+Title1
+word1
+word2
+*PAGE:http://wrong1.com
+Title1
+*PAGE:http://wrong2.com
+*PAGE:http://wrong3.com
+Titleword1 titleword2
+*PAGE:http://page2.com
+Title2
+word1
+word3

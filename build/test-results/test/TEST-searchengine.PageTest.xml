@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="searchengine.PageTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2022-12-14T19:53:29" hostname="Simons-MacBook-Pro.local" time="0.065">
+  <properties/>
+  <testcase name="getCurrentScore_returnthescore()" classname="searchengine.PageTest" time="0.035"/>
+  <testcase name="changeLineToLowerCase_WithUpperCase()" classname="searchengine.PageTest" time="0.003"/>
+  <testcase name="hasWord_TrueWithOneWord()" classname="searchengine.PageTest" time="0.001"/>
+  <testcase name="totalAmountOfWords_TwoWords()" classname="searchengine.PageTest" time="0.001"/>
+  <testcase name="totalAmountOfWords_Onewords()" classname="searchengine.PageTest" time="0.003"/>
+  <testcase name="getTitle_returnthetile()" classname="searchengine.PageTest" time="0.001"/>
+  <testcase name="containsWord_TrueWithTwoWords()" classname="searchengine.PageTest" time="0.0"/>
+  <testcase name="resetFirstScore_reset()" classname="searchengine.PageTest" time="0.0"/>
+  <testcase name="changeLineToLowerCase_NoUpperCase()" classname="searchengine.PageTest" time="0.0"/>
+  <testcase name="containsWord_False()" classname="searchengine.PageTest" time="0.001"/>
+  <testcase name="resetSecondScore_reset()" classname="searchengine.PageTest" time="0.0"/>
+  <testcase name="addLine_noLines()" classname="searchengine.PageTest" time="0.0"/>
+  <testcase name="addLine_addOneLine()" classname="searchengine.PageTest" time="0.001"/>
+  <testcase name="changeLineToLowerCase_AnotherWithUpperCase()" classname="searchengine.PageTest" time="0.0"/>
+  <testcase name="totalAmountOfWords_nowords()" classname="searchengine.PageTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

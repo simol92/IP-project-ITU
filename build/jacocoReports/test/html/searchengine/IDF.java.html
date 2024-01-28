@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="da"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IDF.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">searchengine</a> &gt; <a href="index.source.html" class="el_package">searchengine</a> &gt; <span class="el_source">IDF.java</span></div><h1>IDF.java</h1><pre class="source lang-java linenums">package searchengine;
+
+import java.util.*;
+
+/**
+ * Class to compute the Inverse Document Frequency
+ * 
+ * @author simol, gega, madbe, elsb
+ * 
+ */
+
+<span class="fc" id="L12">public class IDF {</span>
+
+    /**
+     * Computes the Inverse Document Frequency score: 
+     * First we find the set of pages mapped to the specific searchword in our inverted index
+     * 
+     * Then we find the total amount of key-value pairs in the map database of our inverted index
+     * and divides it with the size of the found pages matchting the searchword
+     * 
+     * afterwards we take the natural logarithm with base e of the result and returns a double value
+     * that will be used in the TF-IDF class to compute the final score.
+     * 
+     * @param SearchWord
+     * Specific searchword
+     * 
+     * @param index
+     * Inverted index object to find database size and to lookup searchword
+     * 
+     * @return 
+     * Returns an IDF double value 
+     */
+
+    public Double IDFscore (String SearchWord, InvertedIndex index) {
+ 
+<span class="fc" id="L36">      double idf = 0.0;</span>
+
+<span class="fc" id="L38">      HashSet&lt;Page&gt; set = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L39">      set.addAll(index.lookUp(SearchWord));</span>
+      
+<span class="fc" id="L41">      double websitesWithWord = Double.valueOf(set.size());</span>
+<span class="fc" id="L42">      double totalnumberofwebsites = Double.valueOf(index.getMapSize());  </span>
+
+<span class="fc" id="L44">      idf= Math.log(totalnumberofwebsites / websitesWithWord);</span>
+
+<span class="fc" id="L46">      return idf;</span>
+      
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

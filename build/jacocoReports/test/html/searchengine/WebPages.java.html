@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="da"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebPages.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">searchengine</a> &gt; <a href="index.source.html" class="el_package">searchengine</a> &gt; <span class="el_source">WebPages.java</span></div><h1>WebPages.java</h1><pre class="source lang-java linenums">package searchengine;
+
+import java.io.IOException;
+import java.util.*;
+
+/**
+ * 
+ * A Webpages class
+ * 
+ * Objects will contain Page objects in hashsets 
+ * 
+ * @author simol, gega, madbe, elsb
+ */
+
+public class WebPages {
+
+    private List&lt;List&lt;String&gt;&gt; storingRawPages;
+    private HashSet&lt;Page&gt; webpages;
+    private List&lt;String&gt; filecontent;
+    private FileReader reader;
+
+<span class="fc" id="L22">    public WebPages(){</span>
+
+<span class="fc" id="L24">      storingRawPages = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L25">      webpages = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L26">      filecontent = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L27">      reader = new FileReader();</span>
+
+<span class="fc" id="L29">    }</span>
+    
+    /**
+     * Takes each list from the input list and each list from that specific list will be put into a page object
+     * afterwards the page object will be put into a hashSet containing all the pages
+     * 
+     * @param list - takes a list containing lists of strings 
+     *
+     */
+
+    public void addWebPages(List&lt;List&lt;String&gt;&gt; list){
+      
+
+<span class="fc bfc" id="L42" title="All 2 branches covered.">      for (List&lt;String&gt; rawPage : list) {</span>
+
+<span class="fc" id="L44">        Page page = new Page();</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        for (String string : rawPage) {</span>
+<span class="fc" id="L46">            page.addLine(string);</span>
+<span class="fc" id="L47">        }</span>
+
+        //checks if any words is uppercase
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        for (int i = 2; i &lt; rawPage.size()-1; i++) {</span>
+<span class="fc" id="L51">          char first = rawPage.get(i).charAt(0);</span>
+<span class="fc" id="L52">          String line = rawPage.get(i);</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">          if(Character.isUpperCase(first)){</span>
+<span class="fc" id="L54">            page.changeLineToLowercase(line);</span>
+          } 
+        }
+        
+<span class="fc" id="L58">        webpages.add(page);</span>
+        
+<span class="fc" id="L60">      }</span>
+
+<span class="fc" id="L62">    }</span>
+
+    /**
+     * 
+     * Reads filecontent from a filepath and divides the content into a list of webpages.
+     * Each webpage is then put into the addPages method, which will put each website into a set of pages. 
+     * 
+     * @param filename - takes a filename from a path
+     * @throws IOException
+     */
+
+    public void readFile(String filename) throws IOException{
+
+<span class="fc" id="L75">      reader.addFileContent(filename);</span>
+      
+<span class="fc" id="L77">      filecontent = reader.getFile();</span>
+      
+<span class="fc" id="L79">      int pagenumber = 0;</span>
+<span class="fc" id="L80">      int lastpagenumber = 0;</span>
+      
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        for (int linenumber = 1; linenumber &lt; filecontent.size()-1; linenumber++) {</span>
+
+<span class="fc bfc" id="L84" title="All 2 branches covered.">          if (filecontent.get(linenumber).startsWith(&quot;*PAGE&quot;)) {</span>
+
+<span class="fc" id="L86">            String targetString = filecontent.get(linenumber);</span>
+
+<span class="fc" id="L88">            String nextString = filecontent.get(linenumber+1);</span>
+
+<span class="fc" id="L90">            int lastWord = targetString.lastIndexOf('/');</span>
+
+<span class="fc" id="L92">            String wordsAfterSlash = targetString.substring(lastWord + 1, targetString.length()).replace(&quot;_&quot;, &quot;\s&quot;);</span>
+
+<span class="fc" id="L94">            String linefromfile = filecontent.get(linenumber);</span>
+
+<span class="pc bpc" id="L96" title="2 of 4 branches missed.">            if(linefromfile.startsWith(&quot;*PAGE&quot;) &amp;&amp; wordsAfterSlash.equals(nextString) &amp;&amp; </span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">            !filecontent.get(linenumber+2).startsWith(&quot;*PAGE&quot;)) {</span>
+
+<span class="fc" id="L99">              storingRawPages.add(filecontent.subList(pagenumber, linenumber));</span>
+
+<span class="fc" id="L101">              pagenumber = linenumber;   </span>
+
+            }
+
+<span class="fc bfc" id="L105" title="All 2 branches covered.">          } else if(linenumber == filecontent.size()-2){</span>
+
+<span class="fc" id="L107">            lastpagenumber = filecontent.size();</span>
+            
+<span class="fc" id="L109">            storingRawPages.add(filecontent.subList(pagenumber, lastpagenumber));</span>
+            
+          }
+          
+        }
+<span class="fc" id="L114">        addWebPages(storingRawPages);</span>
+        
+
+<span class="fc" id="L117">    }</span>
+
+    /**
+     * @return returns the set containing page objects 
+     */
+
+
+    public HashSet&lt;Page&gt; getWebpages(){
+      
+<span class="fc" id="L126">      return webpages;</span>
+
+    }
+    
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

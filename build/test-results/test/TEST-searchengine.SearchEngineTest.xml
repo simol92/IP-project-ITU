@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="searchengine.SearchEngineTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2022-12-14T19:53:31" hostname="Simons-MacBook-Pro.local" time="0.235">
+  <properties/>
+  <testcase name="getSearchResults_withJavaOrAsia()" classname="searchengine.SearchEngineTest" time="0.103"/>
+  <testcase name="computeTForTFIDF_TFscoreTopscoreOverBottomscore()" classname="searchengine.SearchEngineTest" time="0.005"/>
+  <testcase name="getSearchResults_resultWithAsia()" classname="searchengine.SearchEngineTest" time="0.05"/>
+  <testcase name="getSearchResults_resultWithJava()" classname="searchengine.SearchEngineTest" time="0.011"/>
+  <testcase name="getDescendingListFromMap_correctOrder()" classname="searchengine.SearchEngineTest" time="0.001"/>
+  <testcase name="computeTForTFIDF_TFIDFscoreTopscoreOverBottomscore()" classname="searchengine.SearchEngineTest" time="0.002"/>
+  <testcase name="getSearchResults_noResults()" classname="searchengine.SearchEngineTest" time="0.003"/>
+  <testcase name="getSearchResults_withJavaAndAsia()" classname="searchengine.SearchEngineTest" time="0.007"/>
+  <testcase name="getSearchResults_with3MultiWordsSplitByOr()" classname="searchengine.SearchEngineTest" time="0.026"/>
+  <testcase name="getSearchResults_with2MultiWordsSplitByOr()" classname="searchengine.SearchEngineTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

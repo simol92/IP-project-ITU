@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="da"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileReader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">searchengine</a> &gt; <a href="index.source.html" class="el_package">searchengine</a> &gt; <span class="el_source">FileReader.java</span></div><h1>FileReader.java</h1><pre class="source lang-java linenums">package searchengine;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
+
+/**
+ * The FileReader class is used to read files from a path
+ * The objects will contain the strings obtained from the file in a list. 
+ * 
+ * @author simol, gega, madbe, elsb
+ */
+
+public class FileReader {
+    
+    private List&lt;String&gt; listfromfile;
+
+<span class="fc" id="L19">    public FileReader(){</span>
+        
+<span class="fc" id="L21">        listfromfile = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L23">    }</span>
+
+    /**
+     * 
+     * reads the file into a list containing the file strings 
+     * @param filename - takes a file as a parameter
+     * @throws IOException
+     */
+    public void addFileContent(String filename) throws IOException{
+        
+<span class="fc" id="L33">        String file = Files.readString(Paths.get(filename)).strip();</span>
+
+<span class="fc" id="L35">        listfromfile = Files.readAllLines(Paths.get(file));</span>
+
+<span class="fc" id="L37">    }</span>
+
+    /**
+     * 
+     * @return returns the a list of Strings
+     * @throws IOException
+     */
+
+    public List&lt;String&gt; getFile() throws IOException{
+      
+<span class="fc" id="L47">        return listfromfile;</span>
+        
+    }
+
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

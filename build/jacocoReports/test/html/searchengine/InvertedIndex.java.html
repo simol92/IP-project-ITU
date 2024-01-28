@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="da"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InvertedIndex.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">searchengine</a> &gt; <a href="index.source.html" class="el_package">searchengine</a> &gt; <span class="el_source">InvertedIndex.java</span></div><h1>InvertedIndex.java</h1><pre class="source lang-java linenums">package searchengine;
+
+
+import java.util.*;
+
+/**
+ * Our inverted index class
+ * 
+ * The index consist of a map with searchwords as keys and a set of pages containing the searchword
+ * 
+ * @author simol, gega, madbe, elsb
+ */
+
+public class InvertedIndex {
+
+    private Map&lt;String, HashSet&lt;Page&gt;&gt; index;
+
+<span class="fc" id="L18">    public InvertedIndex () {</span>
+
+<span class="fc" id="L20">        index = new HashMap &lt;&gt;();</span>
+        
+<span class="fc" id="L22">    }</span>
+
+    /**
+     * 
+     * Takes a searchword and looks it up into the database of the maps key-value pairs.
+     * If a match is found, then it returns a hashSet of pages with each page containing the searchword
+     * 
+     * @param searchterm - takes a parameter input string which will be used as a searchterm
+     * @return - return they values of the key - the searchterm will be the key as a lookup into the values mapped to the key
+     * if the key is not present in the map, it will return an empty map 
+     */
+    
+    public HashSet&lt;Page&gt; lookUp(String searchterm) {
+
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if(index.containsKey(searchterm)){</span>
+
+<span class="fc" id="L38">            return index.get(searchterm);</span>
+
+        } else {
+
+<span class="fc" id="L42">            HashSet&lt;Page&gt; empty = new HashSet&lt;&gt;();</span>
+
+<span class="fc" id="L44">            return empty;</span>
+
+        }
+
+    }
+
+    /**
+     * 
+     * @param websites - takes a parameter input hashSet of pages
+     * 
+     * @Description 
+     * Makes an inverted index via a hashmap. 
+     * 
+     * Takes a set of pages as parameter
+     * 
+     * For each page in the set of pages. 
+     *     
+     * Gets the words from each page and put it as key in the map with the page as value. 
+     * 
+     * IF The word already exist, and another page contains the same word
+     * - add the page to the set mapped to the existing key 
+     */
+
+
+    public void makeInvertedIndex(HashSet&lt;Page&gt; websites) {
+
+        
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        for (Page newPage : websites) {</span>
+            
+<span class="fc bfc" id="L73" title="All 2 branches covered.">            for (String word: newPage.getListOfWords()) {</span>
+
+<span class="fc" id="L75">                HashSet&lt;Page&gt; existingList = new HashSet&lt;&gt;();</span>
+
+<span class="fc bfc" id="L77" title="All 2 branches covered.">                if(index.containsKey(word)){ </span>
+
+<span class="fc" id="L79">                        index.get(word).add(newPage);</span>
+
+                } else {
+
+<span class="fc" id="L83">                    existingList.add(newPage);    </span>
+
+<span class="fc" id="L85">                    index.put(word, existingList); </span>
+                }
+
+<span class="fc" id="L88">            }</span>
+
+
+<span class="fc" id="L91">        }</span>
+       
+<span class="fc" id="L93">    }</span>
+
+    public int getMapSize(){
+
+<span class="fc" id="L97">        return index.size();</span>
+
+    }
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
